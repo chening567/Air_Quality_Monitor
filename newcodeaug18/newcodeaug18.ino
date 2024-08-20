@@ -3,6 +3,8 @@
 #include <Adafruit_GFX.h> // Core graphics library
 #include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
 #include <SPI.h>
+#include <Fonts/Roboto_11.h>
+
 
 
 //mhz19 sensor
@@ -67,7 +69,7 @@ void setup(void) {
   myMHZ19.autoCalibration();
 
   tft.setRotation(3);
-
+  tft.setFont(&Roboto_11);
   
   //Dht11 sensor
   /*
@@ -93,12 +95,13 @@ void dataPage(){
   int Temp;
   C02 = CO2();
   Temp = temp();
-  writeText(22, 32, 1.8, ST77XX_GREEN, "C02 Level:");
-  writeText(115, 32, 1.8, ST77XX_GREEN, "ppm");
+  writeText(22, 32, 1, ST77XX_GREEN, "C02 Level:");
+  writeText(115, 32, 1, ST77XX_GREEN, "ppm");
   if (prevC02 != C02) {
-    eraseNumber(85, 32, 1.8, prevC02);
+    eraseNumber(85, 32, 1, prevC02);
   }
-  writeNumber(85, 32, 1.8, ST77XX_GREEN, C02);
+  writeNumber(85, 32, 1, ST77XX_GREEN, C02);
+  Serial.println(C02);
 
   if (prevTemp != Temp) {
     eraseNumber(0, 0, 1, prevTemp);
@@ -152,7 +155,8 @@ int airQuality() {
 
 int CO2() {
   int CO2; 
-  CO2 = myMHZ19.getCO2();                             // Request CO2 (as ppm)   
+  CO2 = myMHZ19.getCO2();    
+  Serial.println(CO2);                         // Request CO2 (as ppm)   
   //Serial.print("CO2 (ppm): ");                                          // Request Temperature (as Celsius)
   //Serial.print("Temperature (C): ");                  
   return CO2;
